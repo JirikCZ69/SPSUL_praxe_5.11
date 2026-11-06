@@ -136,3 +136,25 @@ Při práci byl využit AI asistent pro návrh architektury evaluačního skript
 ## Reflexe
 
 Tento úkol ukázal, že kvalita AI aplikace nezávisí jen na velikosti modelu, ale především na precizní specifikaci evaluace a pravidlech výstupu. Překvapilo mě, jak obrovský rozdíl v rychlosti a počtu výstupních tokenů je mezi modely se zapnutým myšlenkovým procesem (reasoning) a přímými modely bez zbytečného balastu. Implementace lokální mezipaměti (cache) přes hash byla klíčová – ušetřila limity API a umožnila opakované okamžité spuštění. Celý evaluační systém je postaven modulárně a mohl by být přímo nasazen do praxe pro scraping realitních serverů.
+
+---
+
+## Bonusové úkoly (max. +10 bodů)
+
+1. **Vlastní dashboard (+3 body):**
+   - Vytvořen generátor `src/generate_dashboard.py`, který z `results/summary.json` vytváří interaktivní stránku `results/dashboard.html`.
+   - Stránka obsahuje souhrnné metriky, interaktivní grafy (Chart.js) porovnání latence a spotřeby tokenů napříč všemi běhy a kompletní tabulku.
+   - Spuštění: `python3 src/generate_dashboard.py`.
+
+2. **Test konzistence výstupů s `temperature: 1` (+3 body):**
+   - Skript `src/bonus_consistency.py` otestoval 5 inzerátů v 5 opakovaných bězích s vysokou teplotou `temperature: 1.0` na modelu `qwen/qwen3.8-27b`.
+   - **Výsledek:** Průměrná identičnost odpovědí byla **100.0 %** a shoda s ground truth **100.0 %**.
+   - **Zjištění:** Díky striktnímu schématu a pevným pravidlům v promptu model ani při maximální kreativitě neodbočil od přesného formátu JSON a extrahoval správná data.
+   - Výsledky uloženy v `results/bonus_consistency.json`.
+
+3. **LLM jako hodnotitel (+4 body):**
+   - Skript `src/bonus_evaluator.py` nechal model `qwen/qwen3.8-27b` vygenerovat textové shrnutí inzerátu v jedné větě.
+   - Druhý model (`openai/gpt-oss-20b`) vystupoval jako nezávislý soudce a hodnotil kvalitu shrnutí na škále 1 až 5 na 10 inzerátech.
+   - **Výsledek:** Přesná shoda hodnocení mezi LLM a člověkem byla **100.0 %** (průměrný rozdíl známek **0.00**).
+   - Výsledky uloženy v `results/bonus_evaluator.json`.
+
